@@ -3,10 +3,11 @@
 from unifi import UnifiRestApi, PoeMode, MacAddr
 
 
-def parseArgs():
+def parseCommandLine():
     import argparse
     import sys
 
+    # port profile poe poer power
     pp = argparse.ArgumentParser(add_help=False, argument_default=None)
     pg = pp.add_argument_group(
         "Set POE Port Power",
@@ -21,6 +22,7 @@ def parseArgs():
         "--mode", type=PoeMode, required=pga.profile, help="poe mode; (off|auto)"
     )
 
+    # cycle power of a single poe port
     dp = argparse.ArgumentParser(add_help=False, argument_default=None)
     dg = dp.add_argument_group(
         "Cycle POE Port Power",
@@ -38,7 +40,18 @@ def parseArgs():
         "--port", type=int, required=dpa.device, help="port number of device; (int)"
     )
 
-    combined = argparse.ArgumentParser(parents=[pp, dp])
+    # server connection details
+    sp = argparse.ArgumentParser(add_help=False)
+    sg = sp.add_argument_group("Unifi API Server", "Determines the remote API server")
+    sg.add_argument(
+        "--server", type=str, default=None, required=True, help="server name or IP"
+    )
+    sg.add_argument(
+        "--noverify", dest="verify", action="store_false", help="no server verification"
+    )
+
+    # bring all the argument groups together
+    combined = argparse.ArgumentParser(parents=[sp, pp, dp])
     args = combined.parse_args()
     if args.profile is None and args.device is None:
         combined.print_help(sys.stderr)
@@ -47,9 +60,9 @@ def parseArgs():
 
 
 if __name__ == "__main__":
-    argv = parseArgs()
+    argv = parseCommandLine()
 
-    unifi = UnifiRestApi("unifi.holland.int", verify=False)
+    unifi = UnifiRestApi(argv.server, verify=argv.verify)
     unifi.login(netrcFile="~/.config/netrc")
 
     if argv.profile:
