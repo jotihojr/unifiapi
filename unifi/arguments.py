@@ -16,7 +16,9 @@ class Arguments:
         oneof = [param for param in self.__oneOf if not getattr(namespace, param)]
         if len(oneof) == len(self.__oneOf):
             prog = os.path.split(sys.argv[0])[-1]
-            print(f"{prog}: command line missing all optional parameter groups")
+            print(
+                f"{prog}: command line missing all optional parameters", file=sys.stderr
+            )
             return True
         return False
 

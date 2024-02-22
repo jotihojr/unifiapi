@@ -1,15 +1,14 @@
 # https://github.com/Art-of-WiFi/UniFi-API-client/tree/master/src
 # https://www.youtube.com/watch?v=t-_wVzULmUY
 
+from .logger import LogLevel, Logger
+from .typing import ApiTarget, PoeMode, MacAddr
+from .auth.authenticator import AuthenticationInterface
+
 import json
-import netrc
-import os
 import requests
 from requests.models import CaseInsensitiveDict
 import urllib3
-
-from .logger import LogLevel, Logger
-from .typing import ApiTarget, PoeMode, MacAddr
 
 
 class UnifiApiClient:
@@ -173,13 +172,9 @@ class UnifiApiClient:
         self.logger.setLevel(loglevel)
         return r.status_code == 200
 
-    def login(self, netrcFile: str) -> bool:
-        fn = os.path.expanduser(netrcFile)
-        nr = netrc.netrc(fn)
-        auth = nr.authenticators(self.__server)
-
-        user = auth[0] if auth else "<nodef>"
-        data = {"username": user, "password": auth[2] if auth else "<nodef>"}
+    def login(self, auth: AuthenticationInterface) -> bool:
+        user = auth.user
+        data = {"username": user, "password": auth.password}
         path = "auth/login" if self.__isConsoleOs else "login"
         r = self.__post(path=path, data=data, target=ApiTarget.OS, site=False)
 

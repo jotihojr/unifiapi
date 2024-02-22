@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from unifi import Arguments, UnifiApiClient
+from unifi import AuthNetRc, Arguments, UnifiApiClient
 
 
 def parseCommandLine():
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     argv = parseCommandLine()
 
     unifi = UnifiApiClient(argv.server, verify=argv.verify)
-    unifi.login(netrcFile="~/.config/netrc")
+    unifi.login(AuthNetRc(argv.server))
 
     if argv.profile:
         unifi.setPoeModeByPortProfileName(name=argv.profile, poeMode=argv.mode)
