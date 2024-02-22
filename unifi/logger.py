@@ -117,10 +117,10 @@ class WrappedLogger(logging.Logger):
 
         rv = "(unknown file)", 0, "(unknown function)", None
         while hasattr(f, "f_code"):
-            co = f.f_code
+            co = f.f_code  # type: ignore[noreportOptionalMemberAccess]
             filename = os.path.normcase(co.co_filename)
             if filename in _wrongCallerFiles:
-                f = f.f_back
+                f = f.f_back  # type: ignore[noreportOptionalMemberAccess]
                 continue
             sinfo = None
             if stack_info:
@@ -131,7 +131,7 @@ class WrappedLogger(logging.Logger):
                 if sinfo[-1] == "\n":
                     sinfo = sinfo[:-1]
                 sio.close()
-            rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)
+            rv = (co.co_filename, f.f_lineno, co.co_name, sinfo)  # type: ignore[noreportOptionalMemberAccess]
             break
         return rv
 

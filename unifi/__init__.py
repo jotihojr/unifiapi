@@ -1,7 +1,5 @@
-from .client import UnifiRestApi
-from .client import MacAddr
-from .client import PoeMode
-from .logger import LogLevel
-from .logger import Logger
+from .client import UnifiApiClient
+from .typing import PoeMode, MacAddr
+from .logger import LogLevel, Logger
 
-__all__ = ["UnifiRestApi", "PoeMode", "MacAddr", "LogLevel", "Logger"]
+__all__ = ["UnifiApiClient", "PoeMode", "MacAddr", "LogLevel", "Logger"]

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from unifi import UnifiRestApi, PoeMode, MacAddr
+from unifi import UnifiApiClient, PoeMode, MacAddr
 
 
 def parseCommandLine():
@@ -62,7 +62,7 @@ def parseCommandLine():
 if __name__ == "__main__":
     argv = parseCommandLine()
 
-    unifi = UnifiRestApi(argv.server, verify=argv.verify)
+    unifi = UnifiApiClient(argv.server, verify=argv.verify)
     unifi.login(netrcFile="~/.config/netrc")
 
     if argv.profile:
