@@ -242,7 +242,7 @@ class UnifiApiClient:
         if mac is not None:
             d = d[0]
             if d["mac"] != mac:
-                raise RuntimeError(f'getDeviceDetails requested {mac} got {d["mac"]}')
+                raise RuntimeError(f"getDeviceDetails requested {mac} got {d['mac']}")
             elif port is not None:
                 p = [p for p in d["port_overrides"] if p["port_idx"] == port]
                 if len(p) != 1:
