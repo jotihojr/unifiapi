@@ -40,9 +40,9 @@ class MacAddr:
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
-            return self.__mac is other.__mac
+            return self.__mac == other.__mac
         elif isinstance(other, str):
-            return self.__mac is other.lower()
+            return self.__mac == other.lower()
         return False
 
     def __hash__(self):
