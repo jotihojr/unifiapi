@@ -17,7 +17,7 @@ class AuthNetRc(AuthenticationInterface):
         auth = nr.authenticators(server)
         if not auth:
             raise AuthenticatorError(
-                f"authenticator not found: file '{nrfile}' server {server}'"
+                f"authenticator not found: file '{nrfile}' server '{server}'"
             )
         self.__auth = auth
 
