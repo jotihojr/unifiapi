@@ -5,29 +5,18 @@ import netrc
 
 class AuthNetRc(AuthenticationInterface):
     def __init__(self, server: str, file: str | None = None):
-        nrfile = None
         if file is None:
-            nrfile = self.__getdefaultfile()
-        else:
-            path = os.path.expanduser(file)
+            path = os.path.expanduser("~/.config/netrc")
             if os.path.exists(path):
-                nrfile = path
+                file = path
 
-        nr = netrc.netrc(nrfile)
+        nr = netrc.netrc(file)
         auth = nr.authenticators(server)
         if not auth:
             raise AuthenticatorError(
-                f"authenticator not found: file '{nrfile}' server '{server}'"
+                f"authenticator not found: file '{file}' server '{server}'"
             )
         self.__auth = auth
-
-    def __getdefaultfile(self) -> str | None:
-        nrfile = None
-        for path in "~/.config/netrc", "~/.netrc":
-            p = os.path.expanduser(path)
-            if os.path.exists(p):
-                nrfile = p
-        return nrfile
 
     @property
     def user(self) -> str:
