@@ -16,10 +16,12 @@ class AuthenticationInterface(metaclass=abc.ABCMeta):
             and callable(subclass.password)
         )
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def user(self) -> str:
         raise NotImplementedError
 
-    @abc.abstractproperty
+    @property
+    @abc.abstractmethod
     def password(self) -> str:
         raise NotImplementedError
